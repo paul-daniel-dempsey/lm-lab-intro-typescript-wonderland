@@ -14,13 +14,11 @@ export function playCroquet(): void {
 	clear(true);
 	print('The Queen of Hearts 👑❤ invites you to play croquet 🏑');
 
-	// 👉 FIXME ❌ A ball and a mallet made of numbers.
-	const game: Croquet<number, number> = {
+	const game: Croquet<Ball, Mallet> = {
 		hit: hit,
 	};
 
-	// 👉 FIXME ❌ These parameters to hit() aren't right!
-	if (game && game.hit && game.hit(2468, 8642)) {
+	if (game && game.hit && game.hit('Hedgehog', 'Flamingo')) {
 		print('🏆 Success! You scored! 🏆');
 		print('Time to chat with the queen...');
 		return askQuestion('Press ENTER to continue! ', meetTheQueen);
