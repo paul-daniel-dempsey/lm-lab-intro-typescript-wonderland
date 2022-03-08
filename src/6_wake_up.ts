@@ -1,4 +1,5 @@
 import { endAdventure, haveAdventures } from '..';
+import { tartDance } from './7_tart_dance';
 import { askQuestion, clear, print } from '../console';
 
 // This is a very unusual type setup. It's pobably not a great idea in the real world to nest so many properties
@@ -28,16 +29,10 @@ export function wakeUp(): void {
 	if (awoken.wake?.wake?.wake?.canWake === 'Yes') {
 		print('You have awoken in your bed 🛏 What a lovely dream.');
 		print('Although...❓❓❓');
-		print('What are these tarts doing here?! 🥧🥧🥧🥧🥧🥧 🤔');
+		print('What are these tarts doing here?! 🥧🥧 🤔');
+		print('Are you REALLY awake?...');
 
-		print(
-			'✅ CONGRATULATIONS! You successfully made it through Wonderland! 🥳'
-		);
-
-		return askQuestion(
-			'Press ENTER to re-enter Wonderland! ',
-			haveAdventures
-		);
+		return askQuestion('Press ENTER to continue... ', tartDance);
 	} else {
 		print('You are unable to wake up! 😱');
 		return endAdventure();
