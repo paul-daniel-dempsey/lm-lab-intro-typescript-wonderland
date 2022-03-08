@@ -6,6 +6,13 @@ type Flavour = typeof flavours[number];
 const ingredients = ['wheat', 'rice', 'pasta']
 type Ingredient = typeof ingredients[number];
 
+interface Pie {
+    name : string
+    flavour: Flavour;
+    contains:() => Ingredient;
+    tasty : boolean;
+}
+
 interface Tart {
     name : string
 	flavour: Flavour;
@@ -15,26 +22,26 @@ interface Tart {
 }
 
 interface Plate {
-	tarts: Array<Tart>;
+	pastries: Array<Tart | Pie >;
 }
 
 export function tartDance() {
     
     clear(true);
     print('This bed 🛏 is still in wonderland!');
-    const tartPlate = plateOfTarts();
-    tartPlate.tarts.forEach(tart => { print(`${tart.name} ${tart.flavour} [${(tart.vegan ? `vegan` : ``)} ${(tart.vegetarian ? `vegetarian` : ``)}]`)});
-    askQuestion('The Queens asks how many Custard tarts do you see? Get it right and you will truely wakeup!', tartCount);
+    const pastryPlate = plateOfTarts();
+    pastryPlate.pastries.forEach(tart => { print(`${tart.name} ${tart.flavour} [contains:${(tart.contains)}]`)});
+    askQuestion('The Queens asks how many Custard tarts do you see? Get it right and you will truely wakeup!', pastryCount);
 }
 
-export function tartCount(plateNo : string) {
+export function pastryCount(plateNo : string) {
     
     const plateCount = parseInt(plateNo);
-    const tartPlate = plateOfTarts();
+    const pastryPlate = plateOfTarts();
 
-    if (Number(plateCount) === countItemsOnPlate(true,false,'Custard',tartPlate)) {
+    if (Number(plateCount) === countItemsOnPlate('Custard',pastryPlate)) {
 
-        const items = GetType<Plate>(tartPlate);
+        const items = GetType<Plate>(pastryPlate);
         print(
             `✅ CONGRATULATIONS! You successfully counted the ${items} it through Wonderland! 🥳`
             );
@@ -50,17 +57,17 @@ export function tartCount(plateNo : string) {
 }
 
 function plateOfTarts(): Plate {
-	return {tarts : [{ name : 'Yum1', flavour :'Custard', contains:() => 'wheat',vegetarian : true, vegan : false},
-                     { name : 'Yum2', flavour :'Jam', contains:() => 'wheat', vegetarian : true, vegan : true},
-                     { name : 'Yum3', flavour :'Cream', contains:() => 'pasta'},
-                     { name : 'Yum4', flavour :'Custard', contains:() => 'wheat', vegetarian : true, vegan : false},
-                     { name : 'Yum5', flavour :'Chicken', contains:() => 'rice', vegetarian : false, vegan : false},]};
+
+	return {pastries : [{ name : 'Tart1', flavour :'Custard', contains:() => 'wheat',vegetarian : true, vegan : false},
+                     { name : 'Tart2', flavour :'Jam', contains:() => 'wheat', vegetarian : true, vegan : true},
+                     { name : 'Tart3', flavour :'Cream', contains:() => 'wheat'},
+                     { name : 'Tart4', flavour :'Custard', contains:() => 'wheat', vegetarian : true, vegan : false},
+                     { name : 'Tart5', flavour :'Cream', contains:() => 'wheat', vegetarian : false, vegan : false},
+                     { name : 'Pie1', flavour :'Chicken', contains:() => 'pasta',tasty: true},]};
 }
 
-function countItemsOnPlate(vegetarian :boolean, vegan : boolean,  flv : Flavour, plate : Plate) : number  {
-    return plate.tarts.filter(tart => ((tart.flavour === flv) || 
-                                       ((tart.flavour === flv) &&  (tart.vegan === vegan)) ||
-                                       ((tart.flavour === flv) &&  (tart.vegan === vegan) && (tart.vegetarian === vegetarian)))).length
+function countItemsOnPlate(flv : Flavour, plate : Plate) : number  {
+    return plate.pastries.filter(tart => (tart.flavour === flv)).length
 }
 
 function GetType<T>(thing : T) : string {
